@@ -1,4 +1,4 @@
-// StopWait.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
+// StopWait.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 //
 
 
@@ -8,26 +8,27 @@
 #include "StopWaitRdtSender.h"
 #include "StopWaitRdtReceiver.h"
 
-
+/*
 int main(int argc, char* argv[])
 {
-	RdtSender *ps = new StopWaitRdtSender();
-	RdtReceiver * pr = new StopWaitRdtReceiver();
-//	pns->setRunMode(0);  //VERBOSÄ£Ê½
-//	pns->setRunMode(1);  //°²¾²Ä£Ê½
-	pns->init();
-	pns->setRtdSender(ps);
-	pns->setRtdReceiver(pr);
-	pns->setInputFile("C:\\Users\\crackryan\\Desktop\\input.txt");
-	pns->setOutputFile("C:\\Users\\crackryan\\Desktop\\output.txt");
+    RdtSender *ps = new StopWaitRdtSender();
+    RdtReceiver * pr = new StopWaitRdtReceiver();
+    pns->setRunMode(0);  //VERBOSæ¨¡å¼
+//	pns->setRunMode(1);  //å®‰é™æ¨¡å¼
+    pns->init();
+    pns->setRtdSender(ps);
+    pns->setRtdReceiver(pr);
+    pns->setRtdReceiver(pr); pns->setInputFile("/home/zhangqi/CLionProjects/network_lab2/input.txt");
+    pns->setOutputFile("/home/zhangqi/CLionProjects/network_lab2/output.txt");
 
-	pns->start();
+    pns->start();
 
-	delete ps;
-	delete pr;
-	delete pUtils;									//Ö¸ÏòÎ¨Ò»µÄ¹¤¾ßÀàÊµÀı£¬Ö»ÔÚmainº¯Êı½áÊøÇ°delete
-	delete pns;										//Ö¸ÏòÎ¨Ò»µÄÄ£ÄâÍøÂç»·¾³ÀàÊµÀı£¬Ö»ÔÚmainº¯Êı½áÊøÇ°delete
-	
-	return 0;
+    delete ps;
+    delete pr;
+    delete pUtils;									//æŒ‡å‘å”¯ä¸€çš„å·¥å…·ç±»å®ä¾‹ï¼Œåªåœ¨mainå‡½æ•°ç»“æŸå‰delete
+    delete pns;										//æŒ‡å‘å”¯ä¸€çš„æ¨¡æ‹Ÿç½‘ç»œç¯å¢ƒç±»å®ä¾‹ï¼Œåªåœ¨mainå‡½æ•°ç»“æŸå‰delete
+
+    return 0;
 }
 
+*/

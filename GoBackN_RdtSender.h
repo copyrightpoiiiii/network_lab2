@@ -1,12 +1,20 @@
-#ifndef STOP_WAIT_RDT_SENDER_H
-#define STOP_WAIT_RDT_SENDER_H
+//
+// Created by zhangqi on 2019/12/8.
+//
+
+#ifndef NETWORK_LAB2_GOBACKN_RDTSENDER_H
+#define NETWORK_LAB2_GOBACKN_RDTSENDER_H
+
 #include "RdtSender.h"
-class StopWaitRdtSender :public RdtSender
+
+
+class GoBackN_RdtSender :public RdtSender
 {
 private:
     int expectSequenceNumberSend;	// 下一个发送序号
     bool waitingState;				// 是否处于等待Ack的状态
     Packet packetWaitingAck;		//已发送并等待Ack的数据包
+    int sendWindow;//the window of send length
 
 public:
 
@@ -16,9 +24,9 @@ public:
     void timeoutHandler(int seqNum);					//Timeout handler，将被NetworkServiceSimulator调用
 
 public:
-    StopWaitRdtSender();
-    virtual ~StopWaitRdtSender();
+    GoBackN_RdtSender();
+    virtual ~GoBackN_RdtSender();
 };
 
-#endif
 
+#endif //NETWORK_LAB2_GOBACKN_RDTSENDER_H

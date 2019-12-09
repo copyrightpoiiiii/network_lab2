@@ -4,16 +4,16 @@
 class StopWaitRdtReceiver :public RdtReceiver
 {
 private:
-	int expectSequenceNumberRcvd;	// ÆÚ´ıÊÕµ½µÄÏÂÒ»¸ö±¨ÎÄĞòºÅ
-	Packet lastAckPkt;				//ÉÏ´Î·¢ËÍµÄÈ·ÈÏ±¨ÎÄ
+    int expectSequenceNumberRcvd;	// æœŸå¾…æ”¶åˆ°çš„ä¸‹ä¸€ä¸ªæŠ¥æ–‡åºå·
+    Packet lastAckPkt;				//ä¸Šæ¬¡å‘é€çš„ç¡®è®¤æŠ¥æ–‡
 
 public:
-	StopWaitRdtReceiver();
-	virtual ~StopWaitRdtReceiver();
+    StopWaitRdtReceiver();
+    virtual ~StopWaitRdtReceiver();
 
 public:
-	
-	void receive(const Packet &packet);	//½ÓÊÕ±¨ÎÄ£¬½«±»NetworkServiceµ÷ÓÃ
+
+    void receive(const Packet &packet);	//æ¥æ”¶æŠ¥æ–‡ï¼Œå°†è¢«NetworkServiceè°ƒç”¨
 };
 
 #endif

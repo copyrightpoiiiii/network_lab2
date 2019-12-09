@@ -10,8 +10,8 @@ int main(int argc, char* argv[]) {
 	pns->setRunMode(0); //VERBOS模式 //pns->setRunMode(1); //安静模式
 	pns->init();
 	pns->setRtdSender(ps);
-	pns->setRtdReceiver(pr); pns->setInputFile("/Users/zhangqi/Downloads/input.txt ");
-	pns->setOutputFile("/Users/zhangqi/Downloads/output.txt ");
+	pns->setRtdReceiver(pr); pns->setInputFile("/home/zhangqi/CLionProjects/network_lab2/input.txt");
+	pns->setOutputFile("/home/zhangqi/CLionProjects/network_lab2/output.txt");
 	pns->start();
 	delete ps;
 	delete pr;

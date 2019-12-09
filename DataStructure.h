@@ -4,21 +4,23 @@
 struct  Configuration{
 
 	/**
-	¶¨Òå¸÷²ãÐ­ÒéPayloadÊý¾ÝµÄ´óÐ¡£¨×Ö½ÚÎªµ¥Î»£©
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½Payloadï¿½ï¿½ï¿½ÝµÄ´ï¿½Ð¡ï¿½ï¿½ï¿½Ö½ï¿½Îªï¿½ï¿½Î»ï¿½ï¿½
 	*/
 	static const int PAYLOAD_SIZE = 21;
 
 	/**
-	¶¨Ê±Æ÷Ê±¼ä
+	ï¿½ï¿½Ê±ï¿½ï¿½Ê±ï¿½ï¿½
 	*/
 	static const int TIME_OUT =20;
+
+	static const int WINDOW_N = 5;
 
 };
 
 
 
 /**
-	µÚÎå²ãÓ¦ÓÃ²ãµÄÏûÏ¢
+	ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã²ï¿½ï¿½ï¿½ï¿½Ï¢
 */
 struct  Message {
 	char data[Configuration::PAYLOAD_SIZE];		//payload
@@ -32,12 +34,12 @@ struct  Message {
 };
 
 /**
-	µÚËÄ²ãÔËÊä²ã±¨ÎÄ¶Î
+	ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ã±¨ï¿½Ä¶ï¿½
 */
 struct  Packet {
-	int seqnum;										//ÐòºÅ
-	int acknum;										//È·ÈÏºÅ
-	int checksum;									//Ð£ÑéºÍ
+	int seqnum;										//ï¿½ï¿½ï¿½
+	int acknum;										//È·ï¿½Ïºï¿½
+	int checksum;									//Ð£ï¿½ï¿½ï¿½
 	char payload[Configuration::PAYLOAD_SIZE];		//payload
 	
 	Packet();
