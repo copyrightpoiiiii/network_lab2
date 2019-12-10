@@ -62,10 +62,11 @@ void StopWaitRdtSender::receive(const Packet &ackPkt) {
 }
 
 void StopWaitRdtSender::timeoutHandler(int seqNum) {
-    //唯一一个定时器,无需考虑seqNum
-    pUtils->printPacket("发送方定时器时间到，重发上次发送的报文", this->packetWaitingAck);
-    pns->stopTimer(SENDER,seqNum);										//首先关闭定时器
-    pns->startTimer(SENDER, Configuration::TIME_OUT,seqNum);			//重新启动发送方定时器
-    pns->sendToNetworkLayer(RECEIVER, this->packetWaitingAck);			//重新发送数据包
+
+	//唯一一个定时器,无需考虑seqNum
+	pUtils->printPacket ("发送方定时器时间到，重发上次发送的报文", this->packetWaitingAck);
+	pns->stopTimer (SENDER, seqNum);                                        //首先关闭定时器
+	pns->startTimer (SENDER, Configuration::TIME_OUT, seqNum);            //重新启动发送方定时器
+	pns->sendToNetworkLayer (RECEIVER, this->packetWaitingAck);            //重新发送数据包
 
 }
