@@ -11,9 +11,11 @@ struct  Configuration{
 	/**
 	��ʱ��ʱ��
 	*/
-	static const int TIME_OUT =20;
+	static const int TIME_OUT = 20;
 
-	static const int WINDOW_N = 5;
+	static const int WINDOW_N = 4;
+
+	static const int MAX_SIZE = 100;
 
 };
 
