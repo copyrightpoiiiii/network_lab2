@@ -15,7 +15,10 @@ GoBackN_RdtSender::GoBackN_RdtSender(){
 }
 
 GoBackN_RdtSender::~GoBackN_RdtSender() {
-
+	while (!packetWaitingAck.empty ()) {
+		delete packetWaitingAck.front ();
+		packetWaitingAck.pop_front ();
+	}
 }
 
 bool GoBackN_RdtSender::getWaitingState() {
@@ -53,6 +56,7 @@ void GoBackN_RdtSender::receive (const struct Packet &ackPkt) {
                 pns->stopTimer(SENDER, packetWaitingAck.front()->seqnum);
 			while (!packetWaitingAck.empty () && ackPkt.acknum >= packetWaitingAck.front ()->seqnum) {
 				pUtils->printPacket ("发送方正确收到确认", *packetWaitingAck.front ());
+				delete waitAckPkt.front ();
 				packetWaitingAck.pop_front ();
 			}
 			base = ackPkt.acknum + 1;
@@ -81,7 +85,6 @@ void GoBackN_RdtSender::receive (const struct Packet &ackPkt) {
 
 void GoBackN_RdtSender::timeoutHandler (int seqNum) {
     if(!packetWaitingAck.empty()) {
-        pUtils->printPacket("发送方定时器时间到，重发上次发送的报文", *packetWaitingAck.front());
         pns->stopTimer(SENDER, packetWaitingAck.front()->seqnum);//首先关闭定时器
         for (auto pac:packetWaitingAck) {
             pUtils->printPacket("发送方没有正确收到确认，重发上次发送的报文", *pac);
