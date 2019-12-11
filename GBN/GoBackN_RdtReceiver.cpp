@@ -2,7 +2,7 @@
 // Created by zhangqi on 2019/12/8.
 //
 
-#include "GoBackN_RdtReceiver.h"
+#include "../header/GoBackN_RdtReceiver.h"
 #include "../header/Global.h"
 
 GoBackN_RdtReceiver::GoBackN_RdtReceiver() {

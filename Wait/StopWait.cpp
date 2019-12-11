@@ -5,8 +5,8 @@
 #include "../header/Global.h"
 #include "../header/RdtSender.h"
 #include "../header/RdtReceiver.h"
-#include "StopWaitRdtSender.h"
-#include "StopWaitRdtReceiver.h"
+#include "../header/StopWaitRdtSender.h"
+#include "../header/StopWaitRdtReceiver.h"
 
 /*
 int main(int argc, char* argv[])

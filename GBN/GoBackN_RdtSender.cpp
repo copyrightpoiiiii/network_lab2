@@ -2,7 +2,7 @@
 // Created by zhangqi on 2019/12/8.
 //
 
-#include "GoBackN_RdtSender.h"
+#include "../header/GoBackN_RdtSender.h"
 #include "../header/Global.h"
 
 GoBackN_RdtSender::GoBackN_RdtSender(){
@@ -55,9 +55,9 @@ void GoBackN_RdtSender::receive (const struct Packet &ackPkt) {
             if(ackPkt.acknum==base)
                 pns->stopTimer(SENDER, packetWaitingAck.front()->seqnum);
 			while (!packetWaitingAck.empty () && ackPkt.acknum >= packetWaitingAck.front ()->seqnum) {
-				pUtils->printPacket ("发送方正确收到确认", *packetWaitingAck.front ());
-				delete waitAckPkt.front ();
-				packetWaitingAck.pop_front ();
+				pUtils->printPacket("发送方正确收到确认", *packetWaitingAck.front());
+				delete packetWaitingAck.front();
+				packetWaitingAck.pop_front();
 			}
 			base = ackPkt.acknum + 1;
 			rBase = min (base + sendWindow, sendSize);
