@@ -3,7 +3,7 @@
 //
 
 #include "GoBackN_RdtReceiver.h"
-#include "Global.h"
+#include "../header/Global.h"
 
 GoBackN_RdtReceiver::GoBackN_RdtReceiver() {
     expectSequenceNumberRcvd=0;

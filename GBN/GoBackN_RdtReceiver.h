@@ -5,7 +5,7 @@
 #ifndef NETWORK_LAB2_GOBACKN_RDTRECEIVER_H
 #define NETWORK_LAB2_GOBACKN_RDTRECEIVER_H
 
-#include "RdtReceiver.h"
+#include "../header/RdtReceiver.h"
 
 class GoBackN_RdtReceiver :public RdtReceiver{
 private:

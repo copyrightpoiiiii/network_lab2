@@ -5,9 +5,12 @@
 #ifndef NETWORK_LAB2_SELECTRDTRECEIVER_H
 #define NETWORK_LAB2_SELECTRDTRECEIVER_H
 
+#include "../header/RdtReceiver.h"
+#include <list>
 
-class SelectRdtReceiver {
-
+class SelectRdtReceiver : public RdtReceiver {
+private:
+	int
 };
 
 

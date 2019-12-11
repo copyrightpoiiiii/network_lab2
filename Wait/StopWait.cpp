@@ -2,9 +2,9 @@
 //
 
 
-#include "Global.h"
-#include "RdtSender.h"
-#include "RdtReceiver.h"
+#include "../header/Global.h"
+#include "../header/RdtSender.h"
+#include "../header/RdtReceiver.h"
 #include "StopWaitRdtSender.h"
 #include "StopWaitRdtReceiver.h"
 

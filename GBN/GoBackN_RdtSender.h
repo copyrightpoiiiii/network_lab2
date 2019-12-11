@@ -5,7 +5,7 @@
 #ifndef NETWORK_LAB2_GOBACKN_RDTSENDER_H
 #define NETWORK_LAB2_GOBACKN_RDTSENDER_H
 
-#include "RdtSender.h"
+#include "../header/RdtSender.h"
 #include <list>
 
 

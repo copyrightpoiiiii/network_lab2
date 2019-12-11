@@ -3,7 +3,7 @@
 //
 
 #include "GoBackN_RdtSender.h"
-#include "Global.h"
+#include "../header/Global.h"
 
 GoBackN_RdtSender::GoBackN_RdtSender(){
 	expectSequenceNumberSend = 0;

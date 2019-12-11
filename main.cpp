@@ -1,10 +1,10 @@
-#include"Global.h"
-#include"RdtSender.h"
-#include"RdtReceiver.h"
-#include"StopWaitRdtSender.h"
-#include"StopWaitRdtReceiver.h"
-#include "GoBackN_RdtReceiver.h"
-#include "GoBackN_RdtSender.h"
+#include"header/Global.h"
+#include"header/RdtSender.h"
+#include"header/RdtReceiver.h"
+#include"Wait/StopWaitRdtSender.h"
+#include"Wait/StopWaitRdtReceiver.h"
+#include "GBN/GoBackN_RdtReceiver.h"
+#include "GBN/GoBackN_RdtSender.h"
 
 int main (int argc, char *argv[]) {
 	//如果需要使用其它的Rdt协议，只需要实例化其他具体Rdt实现类的实例， //如GBNRdtSender和GBNRdtSeceiver
