@@ -15,7 +15,7 @@ struct  Configuration{
 
 	static const int WINDOW_N = 4;
 
-	static const int MAX_SIZE = 100;
+	static const int MAX_SIZE = 110;
 
 };
 
