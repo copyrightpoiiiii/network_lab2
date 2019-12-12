@@ -55,9 +55,6 @@ void TcpRdtReceiver::receive (const struct Packet &packet) {
         lastAckPkt.checksum = pUtils->calculateCheckSum(lastAckPkt);
         pUtils->printPacket("接收方发送确认报文", lastAckPkt);
         pns->sendToNetworkLayer(SENDER, lastAckPkt);    //调用模拟网络环境的sendToNetworkLayer，通过网络层发送确认报文到对方
-    } else {
-        std::cout << base << " " << rBase << std::endl;
-        std::cout << waitAck.top().mesNum << std::endl;
     }
 	/* else {
 		 if (checkSum != packet.checksum) {
