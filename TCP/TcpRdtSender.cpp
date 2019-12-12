@@ -5,27 +5,28 @@
 #include "../header/TcpRdtSender.h"
 #include "../header/Global.h"
 
-SelectRdtSender::SelectRdtSender () {
+TcpRdtSender::TcpRdtSender () {
 	expectSequenceNumberSend = 0;
 	sendWindow = Configuration::WINDOW_N;
 	rBase = Configuration::WINDOW_N;
 	sendSize = Configuration::MAX_SIZE;
 	base = 0;
 	waitingState = false;
+	count = 0;
 }
 
-SelectRdtSender::~SelectRdtSender () {
+TcpRdtSender::~TcpRdtSender () {
 	while (!packetWaitingAck.empty ()) {
 		delete packetWaitingAck.front ();
 		packetWaitingAck.pop_front ();
 	}
 }
 
-bool SelectRdtSender::getWaitingState () {
+bool TcpRdtSender::getWaitingState () {
 	return waitingState;
 }
 
-bool SelectRdtSender::send (const Message &message) {
+bool TcpRdtSender::send (const Message &message) {
 	std::cout << waitingState << std::endl;
 	if (!waitingState) {
 		sort_Packet *waitSend = new sort_Packet;
@@ -47,7 +48,7 @@ bool SelectRdtSender::send (const Message &message) {
 	} else return false;
 }
 
-void SelectRdtSender::receive (const Packet &ackPkt) {
+void TcpRdtSender::receive (const Packet &ackPkt) {
 	int checkSum = pUtils->calculateCheckSum (ackPkt);
 	if (checkSum == ackPkt.checksum) {
 		if (!packetWaitingAck.empty () && ackPkt.acknum >= base && ackPkt.acknum < expectSequenceNumberSend) {
@@ -67,6 +68,15 @@ void SelectRdtSender::receive (const Packet &ackPkt) {
 				packetWaitingAck.pop_front ();
 			}
 			return;
+		} else {
+			count++;
+			if (count >= 3) {
+				pUtils->printPacket ("收到3个冗余ACK，重发上次发送的报文", *packetWaitingAck.front ());
+				pns->stopTimer (SENDER, packetWaitingAck.front ()->seqnum);//首先关闭定时器
+				pns->sendToNetworkLayer (RECEIVER, *packetWaitingAck.front ());
+				pns->startTimer (SENDER, Configuration::TIME_OUT, packetWaitingAck.front ()->seqnum);//重新启动发送方定时器
+				count = 0;
+			}
 		}
 	}
 	/*if(!packetWaitingAck.empty()) {
@@ -81,7 +91,7 @@ void SelectRdtSender::receive (const Packet &ackPkt) {
 	 */
 }
 
-void SelectRdtSender::timeoutHandler (int seqNum) {
+void TcpRdtSender::timeoutHandler (int seqNum) {
 	if (!packetWaitingAck.empty ()) {
 		for (auto pac:packetWaitingAck)
 			if (pac->seqnum == seqNum) {

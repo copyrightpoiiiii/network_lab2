@@ -27,6 +27,8 @@ public:
 
 	bool send (const Message &message);
 
+	bool inWindow (int pos);
+
 	void receive (const Packet &ackPkt);
 
 	void timeoutHandler (int seqNum);

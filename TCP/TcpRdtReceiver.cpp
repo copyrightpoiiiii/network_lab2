@@ -5,7 +5,7 @@
 #include "../header/TcpRdtReceiver.h"
 #include "../header/Global.h"
 
-SelectRdtReceiver::SelectRdtReceiver () {
+TcpRdtReceiver::TcpRdtReceiver () {
 	lastAckPkt.acknum = -1;
 	lastAckPkt.checksum = 0;
 	lastAckPkt.seqnum = -1;
@@ -18,13 +18,13 @@ SelectRdtReceiver::SelectRdtReceiver () {
 	receiveSize = Configuration::MAX_SIZE;
 }
 
-SelectRdtReceiver::~SelectRdtReceiver () {
+TcpRdtReceiver::~TcpRdtReceiver () {
 	while (!waitAck.empty ()) {
 		waitAck.pop ();
 	}
 }
 
-void SelectRdtReceiver::receive (const struct Packet &packet) {
+void TcpRdtReceiver::receive (const struct Packet &packet) {
 	int checkSum = pUtils->calculateCheckSum (packet);
 	if (checkSum == packet.checksum && base <= packet.seqnum && packet.seqnum < rBase) {
 		pUtils->printPacket ("接收方正确收到发送方的报文", packet);

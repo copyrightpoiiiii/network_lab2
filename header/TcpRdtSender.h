@@ -13,7 +13,7 @@ struct sort_Packet : public Packet {
 	bool acked = false;
 };
 
-class SelectRdtSender : public RdtSender {
+class TcpRdtSender : public RdtSender {
 private:
 	int expectSequenceNumberSend;    // 下一个发送序号
 	bool waitingState;                // 是否处于等待Ack的状态
@@ -22,6 +22,7 @@ private:
 	int sendSize;//the number of packets needs to seed
 	int base;//start of the window
 	int rBase;//end of the window
+	int count;
 public:
 	bool getWaitingState ();
 
@@ -32,9 +33,9 @@ public:
 	void timeoutHandler (int seqNum);
 
 public:
-	SelectRdtSender ();
+	TcpRdtSender ();
 
-	virtual ~SelectRdtSender ();
+	virtual ~TcpRdtSender ();
 };
 
 

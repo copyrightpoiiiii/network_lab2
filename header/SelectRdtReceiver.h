@@ -23,7 +23,7 @@ public:
 
 class SelectRdtReceiver : public RdtReceiver {
 private:
-	std::priority_queue<sort_Message, std::vector<sort_Message>, std::greater<sort_Message> > waitAck;
+	sort_Message *waitAck;
 	Packet lastAckPkt;
 	int base;
 	int receiveWindow;
@@ -35,6 +35,9 @@ public:
 	virtual ~SelectRdtReceiver ();
 
 public:
+
+	bool inWindow (int pos);
+
 	void receive (const Packet &packet);
 };
 

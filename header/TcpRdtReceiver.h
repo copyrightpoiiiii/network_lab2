@@ -21,7 +21,7 @@ public:
     }
 };
 
-class SelectRdtReceiver : public RdtReceiver {
+class TcpRdtReceiver : public RdtReceiver {
 private:
 	std::priority_queue<sort_Message, std::vector<sort_Message>, std::greater<sort_Message> > waitAck;
 	Packet lastAckPkt;
@@ -30,9 +30,9 @@ private:
 	int rBase;
 	int receiveSize;
 public:
-	SelectRdtReceiver ();
+	TcpRdtReceiver ();
 
-	virtual ~SelectRdtReceiver ();
+	virtual ~TcpRdtReceiver ();
 
 public:
 	void receive (const Packet &packet);
