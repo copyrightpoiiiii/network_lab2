@@ -2,15 +2,15 @@
 // Created by zhangqi on 2019/12/8.
 //
 
-#ifndef NETWORK_LAB2_TCPRDTSENDER_H
-#define NETWORK_LAB2_TCPRDTSENDER_H
+#ifndef NETWORK_LAB2_SELECTRDTSENDER_H
+#define NETWORK_LAB2_SELECTRDTSENDER_H
 
 #include "RdtSender.h"
 #include <list>
 
 
 struct sort_Packet : public Packet {
-	bool acked = false;
+    bool acked = false;
 };
 
 class SelectRdtSender : public RdtSender {

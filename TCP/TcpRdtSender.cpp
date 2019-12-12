@@ -29,17 +29,17 @@ bool TcpRdtSender::getWaitingState () {
 bool TcpRdtSender::send (const Message &message) {
 	std::cout << waitingState << std::endl;
 	if (!waitingState) {
-		sort_Packet *waitSend = new sort_Packet;
-		waitSend->acknum = -1;
-		waitSend->seqnum = expectSequenceNumberSend;
-		waitSend->checksum = 0;
-		waitSend->acked = false;
-		memcpy (waitSend->payload, message.data, sizeof (message.data));
-		waitSend->checksum = pUtils->calculateCheckSum (*waitSend);
-		pUtils->printPacket ("发送方发送报文", *waitSend);
-		pns->startTimer (SENDER, Configuration::TIME_OUT, waitSend->seqnum);            //启动发送方定时器
-		pns->sendToNetworkLayer (RECEIVER, *waitSend);
-		std::cout << "当前滑动窗口为: " << base << " " << expectSequenceNumberSend << " " << rBase << std::endl;
+        sort_Packet_tcp *waitSend = new sort_Packet_tcp;
+        waitSend->acknum = -1;
+        waitSend->seqnum = expectSequenceNumberSend;
+        waitSend->checksum = 0;
+        waitSend->acked = false;
+        memcpy(waitSend->payload, message.data, sizeof(message.data));
+        waitSend->checksum = pUtils->calculateCheckSum(*waitSend);
+        pUtils->printPacket("发送方发送报文", *waitSend);
+        pns->startTimer(SENDER, Configuration::TIME_OUT, waitSend->seqnum);            //启动发送方定时器
+        pns->sendToNetworkLayer(RECEIVER, *waitSend);
+        std::cout << "当前滑动窗口为: " << base << " " << expectSequenceNumberSend << " " << rBase << std::endl;
 		expectSequenceNumberSend++;
 		if (expectSequenceNumberSend >= rBase)
 			waitingState = true;
@@ -52,16 +52,17 @@ void TcpRdtSender::receive (const Packet &ackPkt) {
 	int checkSum = pUtils->calculateCheckSum (ackPkt);
 	if (checkSum == ackPkt.checksum) {
 		if (!packetWaitingAck.empty () && ackPkt.acknum >= base && ackPkt.acknum < expectSequenceNumberSend) {
-			for (auto pac:packetWaitingAck)
-				if (pac->seqnum == ackPkt.acknum) {
-					pUtils->printPacket ("发送方正确收到确认", *pac);
-					pns->stopTimer (SENDER, ackPkt.acknum);
-					pac->acked = true;
-					break;
-				}
-			while (!packetWaitingAck.empty () && packetWaitingAck.front ()->acked) {
-				base = packetWaitingAck.front ()->seqnum + 1;
-				rBase = min (base + sendWindow, sendSize);
+            count = 0;
+            for (auto pac:packetWaitingAck)
+                if (pac->seqnum == ackPkt.acknum) {
+                    pUtils->printPacket("发送方正确收到确认", *pac);
+                    pns->stopTimer(SENDER, ackPkt.acknum);
+                    pac->acked = true;
+                    break;
+                }
+            while (!packetWaitingAck.empty() && packetWaitingAck.front()->acked) {
+                base = packetWaitingAck.front()->seqnum + 1;
+                rBase = min(base + sendWindow, sendSize);
 				std::cout << "now window: " << base << " " << expectSequenceNumberSend << " " << rBase << std::endl;
 				waitingState = base >= rBase;
 				delete packetWaitingAck.front ();
@@ -71,12 +72,14 @@ void TcpRdtSender::receive (const Packet &ackPkt) {
 		} else {
 			count++;
 			if (count >= 3) {
-				pUtils->printPacket ("收到3个冗余ACK，重发上次发送的报文", *packetWaitingAck.front ());
-				pns->stopTimer (SENDER, packetWaitingAck.front ()->seqnum);//首先关闭定时器
-				pns->sendToNetworkLayer (RECEIVER, *packetWaitingAck.front ());
-				pns->startTimer (SENDER, Configuration::TIME_OUT, packetWaitingAck.front ()->seqnum);//重新启动发送方定时器
-				count = 0;
-			}
+                if (!packetWaitingAck.empty()) {
+                    pUtils->printPacket("收到3个冗余ACK，重发上次发送的报文", *packetWaitingAck.front());
+                    pns->stopTimer(SENDER, packetWaitingAck.front()->seqnum);//首先关闭定时器
+                    pns->sendToNetworkLayer(RECEIVER, *packetWaitingAck.front());
+                    pns->startTimer(SENDER, Configuration::TIME_OUT, packetWaitingAck.front()->seqnum);//重新启动发送方定时器
+                }
+                count = 0;
+            }
 		}
 	}
 	/*if(!packetWaitingAck.empty()) {

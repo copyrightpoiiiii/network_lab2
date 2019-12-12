@@ -27,19 +27,19 @@ TcpRdtReceiver::~TcpRdtReceiver () {
 void TcpRdtReceiver::receive (const struct Packet &packet) {
 	int checkSum = pUtils->calculateCheckSum (packet);
 	if (checkSum == packet.checksum && base <= packet.seqnum && packet.seqnum < rBase) {
-		pUtils->printPacket ("接收方正确收到发送方的报文", packet);
+        pUtils->printPacket("接收方正确收到发送方的报文", packet);
 
-		sort_Message msg;
-		memcpy (msg.data, packet.payload, sizeof (packet.payload));
-		msg.mesNum = packet.seqnum;
+        sort_Message_tcp msg;
+        memcpy(msg.data, packet.payload, sizeof(packet.payload));
+        msg.mesNum = packet.seqnum;
 
-		waitAck.push (msg);
+        waitAck.push(msg);
 
-		while (!waitAck.empty () && waitAck.top ().mesNum == base) {
-			pns->delivertoAppLayer (RECEIVER, waitAck.top ());
-			while (!waitAck.empty () && waitAck.top ().mesNum == base)
-				waitAck.pop ();
-			base++;
+        while (!waitAck.empty() && waitAck.top().mesNum == base) {
+            pns->delivertoAppLayer(RECEIVER, waitAck.top());
+            while (!waitAck.empty() && waitAck.top().mesNum == base)
+                waitAck.pop();
+            base++;
 		}
 		rBase = min (base + receiveWindow, receiveSize);
 		//pns->delivertoAppLayer(RECEIVER, msg);
@@ -51,11 +51,14 @@ void TcpRdtReceiver::receive (const struct Packet &packet) {
 
 		//this->expectSequenceNumberRcvd+=1 ; //every time num will increase 1
 	} else if (checkSum == packet.checksum && base - receiveWindow <= packet.seqnum && packet.seqnum < base) {
-		lastAckPkt.acknum = packet.seqnum; //确认序号等于收到的报文序号
-		lastAckPkt.checksum = pUtils->calculateCheckSum (lastAckPkt);
-		pUtils->printPacket ("接收方发送确认报文", lastAckPkt);
-		pns->sendToNetworkLayer (SENDER, lastAckPkt);    //调用模拟网络环境的sendToNetworkLayer，通过网络层发送确认报文到对方
-	}
+        lastAckPkt.acknum = packet.seqnum; //确认序号等于收到的报文序号
+        lastAckPkt.checksum = pUtils->calculateCheckSum(lastAckPkt);
+        pUtils->printPacket("接收方发送确认报文", lastAckPkt);
+        pns->sendToNetworkLayer(SENDER, lastAckPkt);    //调用模拟网络环境的sendToNetworkLayer，通过网络层发送确认报文到对方
+    } else {
+        std::cout << base << " " << rBase << std::endl;
+        std::cout << waitAck.top().mesNum << std::endl;
+    }
 	/* else {
 		 if (checkSum != packet.checksum) {
 			 pUtils->printPacket("接收方没有正确收到发送方的报文,数据校验错误", packet);
