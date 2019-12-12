@@ -2,7 +2,7 @@
 // Created by zhangqi on 2019/12/8.
 //
 
-#include "../header/SelectRdtReceiver.h"
+#include "../header/TcpRdtReceiver.h"
 #include "../header/Global.h"
 
 SelectRdtReceiver::SelectRdtReceiver() {

@@ -6,13 +6,14 @@
 #include "../header/Global.h"
 
 GoBackN_RdtReceiver::GoBackN_RdtReceiver() {
-    expectSequenceNumberRcvd=0;
-    lastAckPkt.acknum= -1;
-    lastAckPkt.checksum=0;
-    lastAckPkt.seqnum =-1;
-    for(int i=0;i<Configuration::PAYLOAD_SIZE;i++)
-            lastAckPkt.payload[i]='.';
-    lastAckPkt.checksum=pUtils->calculateCheckSum(lastAckPkt);
+	receiveWindow = Configuration::WINDOW_N;
+	expectSequenceNumberRcvd = 0;
+	lastAckPkt.acknum = -1;
+	lastAckPkt.checksum = 0;
+	lastAckPkt.seqnum = -1;
+	for (int i = 0; i < Configuration::PAYLOAD_SIZE; i++)
+		lastAckPkt.payload[i] = '.';
+	lastAckPkt.checksum = pUtils->calculateCheckSum (lastAckPkt);
 }
 
 GoBackN_RdtReceiver::~GoBackN_RdtReceiver(){
@@ -34,6 +35,7 @@ void GoBackN_RdtReceiver::receive(const Packet &packet) {
         pns->sendToNetworkLayer(SENDER, lastAckPkt);	//调用模拟网络环境的sendToNetworkLayer，通过网络层发送确认报文到对方
 
         this->expectSequenceNumberRcvd+=1 ; //every time num will increase 1
+	    this->expectSequenceNumberRcvd %= receiveWindow;
     }
     else {
         if (checkSum != packet.checksum) {
@@ -46,3 +48,4 @@ void GoBackN_RdtReceiver::receive(const Packet &packet) {
         pns->sendToNetworkLayer(SENDER, lastAckPkt);
     }
 }
+

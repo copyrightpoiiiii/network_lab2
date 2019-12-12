@@ -25,7 +25,7 @@ bool SelectRdtSender::getWaitingState () {
 	return waitingState;
 }
 
-bool SelectRdtSender::send(const Message &message) {
+bool SelectRdtSender::send (const Message &message) {
 	std::cout << waitingState << std::endl;
 	if (!waitingState) {
 		sort_Packet *waitSend = new sort_Packet;
@@ -33,38 +33,38 @@ bool SelectRdtSender::send(const Message &message) {
 		waitSend->seqnum = expectSequenceNumberSend;
 		waitSend->checksum = 0;
 		waitSend->acked = false;
-		memcpy(waitSend->payload, message.data, sizeof(message.data));
-		waitSend->checksum = pUtils->calculateCheckSum(*waitSend);
-		pUtils->printPacket("发送方发送报文", *waitSend);
-		pns->startTimer(SENDER, Configuration::TIME_OUT, waitSend->seqnum);            //启动发送方定时器
-		pns->sendToNetworkLayer(RECEIVER, *waitSend);
+		memcpy (waitSend->payload, message.data, sizeof (message.data));
+		waitSend->checksum = pUtils->calculateCheckSum (*waitSend);
+		pUtils->printPacket ("发送方发送报文", *waitSend);
+		pns->startTimer (SENDER, Configuration::TIME_OUT, waitSend->seqnum);            //启动发送方定时器
+		pns->sendToNetworkLayer (RECEIVER, *waitSend);
 		std::cout << "当前滑动窗口为: " << base << " " << expectSequenceNumberSend << " " << rBase << std::endl;
 		expectSequenceNumberSend++;
 		if (expectSequenceNumberSend >= rBase)
 			waitingState = true;
-		packetWaitingAck.push_back(waitSend);
+		packetWaitingAck.push_back (waitSend);
 		return true;
 	} else return false;
 }
 
-void SelectRdtSender::receive(const Packet &ackPkt) {
-	int checkSum = pUtils->calculateCheckSum(ackPkt);
+void SelectRdtSender::receive (const Packet &ackPkt) {
+	int checkSum = pUtils->calculateCheckSum (ackPkt);
 	if (checkSum == ackPkt.checksum) {
-		if (!packetWaitingAck.empty() && ackPkt.acknum >= base && ackPkt.acknum < expectSequenceNumberSend) {
+		if (!packetWaitingAck.empty () && ackPkt.acknum >= base && ackPkt.acknum < expectSequenceNumberSend) {
 			for (auto pac:packetWaitingAck)
 				if (pac->seqnum == ackPkt.acknum) {
-					pUtils->printPacket("发送方正确收到确认", *pac);
-					pns->stopTimer(SENDER, ackPkt.acknum);
+					pUtils->printPacket ("发送方正确收到确认", *pac);
+					pns->stopTimer (SENDER, ackPkt.acknum);
 					pac->acked = true;
 					break;
 				}
-			while (!packetWaitingAck.empty() && packetWaitingAck.front()->acked) {
-				base = packetWaitingAck.front()->seqnum + 1;
-				rBase = min(base + sendWindow, sendSize);
+			while (!packetWaitingAck.empty () && packetWaitingAck.front ()->acked) {
+				base = packetWaitingAck.front ()->seqnum + 1;
+				rBase = min (base + sendWindow, sendSize);
 				std::cout << "now window: " << base << " " << expectSequenceNumberSend << " " << rBase << std::endl;
 				waitingState = base >= rBase;
-				delete packetWaitingAck.front();
-				packetWaitingAck.pop_front();
+				delete packetWaitingAck.front ();
+				packetWaitingAck.pop_front ();
 			}
 			return;
 		}

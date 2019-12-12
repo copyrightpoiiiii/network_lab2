@@ -7,16 +7,19 @@
 
 #include "RdtReceiver.h"
 
-class GoBackN_RdtReceiver :public RdtReceiver{
+class GoBackN_RdtReceiver : public RdtReceiver {
 private:
-    int expectSequenceNumberRcvd;
-    Packet lastAckPkt;
-public:
-    GoBackN_RdtReceiver();
-    virtual ~GoBackN_RdtReceiver();
+	int expectSequenceNumberRcvd;
+	int receiveWindow;
+	Packet lastAckPkt;
 
 public:
-    void receive(const Packet &packet);
+	GoBackN_RdtReceiver ();
+
+	virtual ~GoBackN_RdtReceiver ();
+
+public:
+	void receive (const Packet &packet);
 };
 
 
