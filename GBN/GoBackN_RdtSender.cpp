@@ -58,24 +58,20 @@ bool GoBackN_RdtSender::send (const Message &message) {
 void GoBackN_RdtSender::receive (const struct Packet &ackPkt) {
 	int checkSum = pUtils->calculateCheckSum (ackPkt);
 	if (checkSum == ackPkt.checksum) {
-		if (!packetWaitingAck.empty () && ackPkt.acknum >= packetWaitingAck.front ()->seqnum) {
+		if (!packetWaitingAck.empty () && inWindow (ackPkt.acknum)) {
 			if (ackPkt.acknum == base)
 				pns->stopTimer (SENDER, packetWaitingAck.front ()->seqnum);
-			base = ackPkt.acknum + 1;
-			rBase = min (base + sendWindow, sendSize);
-			std::cout << "now window: " << base << " " << expectSequenceNumberSend << " " << rBase << std::endl;
 			while (!packetWaitingAck.empty () && inWindow (ackPkt.acknum)) {
 				pUtils->printPacket ("发送方正确收到确认", *packetWaitingAck.front ());
 				delete packetWaitingAck.front ();
+				base=(base+1)%sendWindow;
+				rBase = (base + sendWindow/2)%sendWindow;
 				packetWaitingAck.pop_front ();
 			}
-			if (base >= rBase)
-				waitingState = true;
-			else {
-				waitingState = false;
-				if (!packetWaitingAck.empty ())
-					pns->startTimer (SENDER, Configuration::TIME_OUT, packetWaitingAck.front ()->seqnum);
-			}
+            std::cout << "now window: " << base << " " << expectSequenceNumberSend << " " << rBase << std::endl;
+			waitingState = false;
+			if (!packetWaitingAck.empty ())
+			    pns->startTimer (SENDER, Configuration::TIME_OUT, packetWaitingAck.front ()->seqnum);
 			return;
 		}
 	}

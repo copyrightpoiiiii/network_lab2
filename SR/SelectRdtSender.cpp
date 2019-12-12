@@ -2,8 +2,8 @@
 // Created by zhangqi on 2019/12/8.
 //
 
-#include "../header/TcpRdtSender.h"
-#include "../header/Global.h"
+#include "SelectRdtSender.h"
+#include "Global.h"
 
 SelectRdtSender::SelectRdtSender () {
 	expectSequenceNumberSend = 0;

@@ -10,8 +10,8 @@
 
 int main (int argc, char *argv[]) {
     //如果需要使用其它的Rdt协议，只需要实例化其他具体Rdt实现类的实例， //如GBNRdtSender和GBNRdtSeceiver
-    RdtSender *ps = new TcpRdtSender ();
-    RdtReceiver *pr = new TcpRdtReceiver ();
+    RdtSender *ps = new GoBackN_RdtSender ();
+    RdtReceiver *pr = new GoBackN_RdtReceiver ();
     pns->setRunMode (0); //VERBOS模式 //pns->setRunMode(1); //安静模式
     pns->init ();
     pns->setRtdSender (ps);
