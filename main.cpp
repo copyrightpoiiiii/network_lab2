@@ -13,14 +13,14 @@ int main(int argc, char *argv[]) {
     std::ofstream of("out.log");
     std::streambuf *filebuf = of.rdbuf();
     cout.rdbuf(filebuf);
-    RdtSender *ps = new TcpRdtSender();
-    RdtReceiver *pr = new TcpRdtReceiver();
+    RdtSender *ps = new SelectRdtSender();
+    RdtReceiver *pr = new SelectRdtReceiver();
     pns->setRunMode(0); //VERBOS模式 //pns->setRunMode(1); //安静模式
     pns->init();
     pns->setRtdSender(ps);
     pns->setRtdReceiver(pr);
-    pns->setInputFile("/home/zhangqi/CLionProjects/network_lab2/input.txt");
-    pns->setOutputFile("/home/zhangqi/CLionProjects/network_lab2/output.txt");
+    pns->setInputFile("input.txt");
+    pns->setOutputFile("output.txt");
     pns->start();
     delete ps;
     delete pr;
